@@ -24,7 +24,7 @@ const Navbar = () => {
   return (
     <div className="bg-red-700/95 shadow sticky top-0 z-50">
       <Container>
-        <nav className="navbar shadow-sm md:px-0">
+        <nav className="navbar shadow-sm xl:px-0">
           <div className="navbar-start">
             <Logo />
           </div>

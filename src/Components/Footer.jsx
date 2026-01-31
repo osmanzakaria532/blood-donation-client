@@ -5,7 +5,7 @@ import Container from './_UI/Container';
 const Footer = () => {
   return (
     <footer className="bg-gray-800 text-gray-300 py-12">
-      <Container className="px-2 md:px-0">
+      <Container className="px-2 xl:px-0">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>
             <h3 className="text-red-700 font-semibold text-lg mb-4">About LifeStream</h3>

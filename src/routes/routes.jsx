@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router';
 import RootLayout from '../Layouts/RootLayout';
+import Home from '../Pages/Home/Home';
 
 // const role = 'donor'; // donor | volunteer | admin
 
@@ -10,10 +11,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <p>home</p>,
-        // loader: () => import('../Components/Home.jsx').then((module) => module.default),
-        // lazy: () => import('../Components/Home.jsx').then((module) => ({ element: <module.default /> })),
-        // Component: () => import('../Components/Home.jsx').then((module) => module.default),
+        element: <Home />,
       },
       {
         path: 'donation-requests',
