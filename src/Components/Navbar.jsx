@@ -58,7 +58,7 @@ const Navbar = () => {
                   <img
                     src={user?.photoURL}
                     alt="Profile photo"
-                    className="rounded-full w-10 h-10"
+                    className="rounded-full w-10 h-10 object-cover"
                     title={user?.displayName}
                   />
                   {open && (
