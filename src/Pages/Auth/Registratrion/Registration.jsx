@@ -329,8 +329,8 @@ const Registration = () => {
 
           <p className="text-center mt-4 text-gray-500">
             Already have an account?{' '}
-            <a href="/auth/login" className="text-red-600 font-semibold">
-              Login
+            <a href="/auth/sign-in" className="text-red-600 font-semibold">
+              Sign In
             </a>
           </p>
         </form>

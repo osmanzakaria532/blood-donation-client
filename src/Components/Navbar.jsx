@@ -1,11 +1,26 @@
 import { useState } from 'react';
+import { MdArrowOutward } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useAuth } from '../Hooks/useAuth';
 import Container from './_UI/Container';
 import Logo from './_UI/Logo';
 import NavItem from './_UI/NavItem';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { user, logOut } = useAuth();
+
+  const handleSignOut = () => {
+    logOut()
+      .then((result) => {
+        console.log(result);
+        toast.success('Sign Out Successfully');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const links = (
     <>
@@ -34,9 +49,44 @@ const Navbar = () => {
           </div>
 
           <div className="navbar-end">
-            <Link to="/" className="btn btn-sm btn-soft text-base">
+            {/* <Link to="/" className="btn btn-sm btn-soft text-base">
               Log In
-            </Link>
+            </Link> */}
+            {user ? (
+              <>
+                <div onClick={() => setOpen(!open)} className="relative cursor-pointer">
+                  <img
+                    src={user?.photoURL}
+                    alt="Profile photo"
+                    className="rounded-full w-10 h-10"
+                    title={user?.displayName}
+                  />
+                  {open && (
+                    <div className="w-32 absolute -right-2 mt-3 bg-white px-2 py-2 space-y-1.5 flex flex-col justify-end items-end text-center">
+                      <div className="w-full">
+                        <Link to="/dashboard" className="py-2 px-3 block bg-gray-400/10 ">
+                          Dashboard
+                        </Link>
+                      </div>
+                      <div className="w-full">
+                        <button onClick={handleSignOut} className="btn px-3 w-full">
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <Link to="/auth/sign-in" className="flex">
+                <span className="btn bg-gray-100 rounded-lg px-2 md:px-4 py-1 text-sm md:text-base">
+                  Sign in
+                </span>
+                <span className="rounded-full w-10 h-10 bg-white md:flex items-center justify-center ms-1 hidden">
+                  <MdArrowOutward className=" text-red-600 text-2xl" />
+                </span>
+              </Link>
+            )}
 
             {/* mobile dropdown */}
             <div className={`dropdown dropdown-end lg:hidden ${open ? 'dropdown-open' : ''}`}>

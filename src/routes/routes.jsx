@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router';
 import RootLayout from '../Layouts/RootLayout';
 import Registration from '../Pages/Auth/Registratrion/Registration';
+import SignIn from '../Pages/Auth/SignIn/SignIn';
 import Home from '../Pages/Home/Home';
 
 // const role = 'donor'; // donor | volunteer | admin
@@ -29,10 +30,10 @@ const router = createBrowserRouter([
         element: <Registration />,
         loader: () => fetch('/bd-divisions-district-upazila-en.json').then((res) => res.json()),
       },
-      // {
-      //   path: 'login',
-      //   element: <Login />,
-      // },
+      {
+        path: 'sign-in',
+        element: <SignIn />,
+      },
     ],
   },
 ]);
