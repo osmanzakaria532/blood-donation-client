@@ -7,6 +7,7 @@ import Dashboard from '../Pages/Dashboard/dashboard';
 import Profile from '../Pages/Dashboard/Profile/profile';
 import DonationRequests from '../Pages/DonationRequests/DonationRequests';
 import Home from '../Pages/Home/Home';
+import MyDonationRequests from '../Pages/Dashboard/MyDonationRequests/MyDonationRequests';
 
 // const role = 'donor'; // donor | volunteer | admin
 
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: 'profile',
         element: <Profile />,
+      },
+      {
+        path: 'my-donation-requests',
+        element: <MyDonationRequests />,
       },
     ],
   },

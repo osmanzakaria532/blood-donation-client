@@ -56,7 +56,7 @@ const Sidebar = () => {
           <SidebarItem
             to="/dashboard/my-donation-requests"
             icon="📋"
-            label="My Requests"
+            label="My Donation Requests"
             open={open}
           />
           <SidebarItem
