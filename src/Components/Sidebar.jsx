@@ -1,22 +1,31 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
+import { useAuth } from '../Hooks/useAuth';
 
-const DashboardLayout = () => {
-  // ===== USER (later from Firebase) =====
-  const authUser = {
-    name: 'Rahim',
-    role: 'admin', // donor | volunteer | admin
-  };
-
+const Sidebar = () => {
+  const { logOut } = useAuth();
+  const navigate = useNavigate();
   // ===== Sidebar state (Saved) =====
   const [open, setOpen] = useState(() => {
     const saved = localStorage.getItem('sidebar');
     return saved ? JSON.parse(saved) : true;
   });
-
   useEffect(() => {
     localStorage.setItem('sidebar', JSON.stringify(open));
   }, [open]);
+
+  const handleSignOut = () => {
+    logOut()
+      .then((result) => {
+        console.log(result);
+        toast.success('Sign Out Successfully');
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -32,7 +41,7 @@ const DashboardLayout = () => {
           onClick={() => setOpen(!open)}
         >
           <span className={`font-bold text-xl ${!open && 'hidden'}`}>
-            <Link to="/">BloodCare</Link>
+            <Link to="/"> 🩸 BloodCare</Link>
           </span>
           <button className="text-xl">☰</button>
         </div>
@@ -58,57 +67,54 @@ const DashboardLayout = () => {
             </li>
 
             {/* Donor */}
-            {authUser.role === 'donor' && (
-              <>
-                <li>
-                  <NavLink
-                    to="/dashboard/create-donation-request"
-                    className="flex items-center gap-3 p-3 hover:bg-red-500"
-                  >
-                    🩸 {open && <span>Create Donation Request</span>}
-                  </NavLink>
-                </li>
+            <li>
+              <NavLink
+                to="/dashboard/create-donation-request"
+                className="flex items-center gap-3 p-3 hover:bg-red-500"
+              >
+                🩸 {open && <span>Create Donation Request</span>}
+              </NavLink>
+            </li>
 
-                <li>
-                  <NavLink
-                    to="/dashboard/my-donation-requests"
-                    className="flex items-center gap-3 p-3 hover:bg-red-500"
-                  >
-                    📋 {open && <span>My Donation Requests</span>}
-                  </NavLink>
-                </li>
-              </>
-            )}
+            <li>
+              <NavLink
+                to="/dashboard/my-donation-requests"
+                className="flex items-center gap-3 p-3 hover:bg-red-500"
+              >
+                📋 {open && <span>My Donation Requests</span>}
+              </NavLink>
+            </li>
 
             {/* Volunteer & Admin */}
-            {(authUser.role === 'volunteer' || authUser.role === 'admin') && (
-              <li>
-                <NavLink
-                  to="/dashboard/all-blood-donation-request"
-                  className="flex items-center gap-3 p-3 hover:bg-red-500"
-                >
-                  🗂 {open && <span>All Donation Requests</span>}
-                </NavLink>
-              </li>
-            )}
+            {/* {(authUser.role === 'volunteer' || authUser.role === 'admin') && <p>s</p>} */}
+            <li>
+              <NavLink
+                to="/dashboard/all-blood-donation-request"
+                className="flex items-center gap-3 p-3 hover:bg-red-500"
+              >
+                🗂 {open && <span>All Donation Requests</span>}
+              </NavLink>
+            </li>
 
             {/* Admin only */}
-            {authUser.role === 'admin' && (
-              <li>
-                <NavLink
-                  to="/dashboard/all-users"
-                  className="flex items-center gap-3 p-3 hover:bg-red-500"
-                >
-                  👥 {open && <span>All Users</span>}
-                </NavLink>
-              </li>
-            )}
+            {/* {authUser.role === 'admin' && <p>s</p>} */}
+            <li>
+              <NavLink
+                to="/dashboard/all-users"
+                className="flex items-center gap-3 p-3 hover:bg-red-500"
+              >
+                👥 {open && <span>All Users</span>}
+              </NavLink>
+            </li>
           </ul>
 
           {/* Logout */}
           <ul>
             <li>
-              <button className="flex items-center gap-3 p-3 w-full hover:bg-red-500 text-left">
+              <button
+                onClick={handleSignOut}
+                className="flex items-center gap-3 p-3 w-full hover:bg-red-500 text-left"
+              >
                 🚪 {open && <span>Logout</span>}
               </button>
             </li>
@@ -119,4 +125,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default Sidebar;

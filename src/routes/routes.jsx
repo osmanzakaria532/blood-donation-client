@@ -1,7 +1,10 @@
 import { createBrowserRouter } from 'react-router';
+import DashboardLayout from '../Layouts/DashboardLayout';
 import RootLayout from '../Layouts/RootLayout';
 import Registration from '../Pages/Auth/Registratrion/Registration';
 import SignIn from '../Pages/Auth/SignIn/SignIn';
+import Dashboard from '../Pages/Dashboard/dashboard';
+import Profile from '../Pages/Dashboard/Profile/profile';
 import DonationRequests from '../Pages/DonationRequests/DonationRequests';
 import Home from '../Pages/Home/Home';
 
@@ -34,6 +37,23 @@ const router = createBrowserRouter([
       {
         path: 'sign-in',
         element: <SignIn />,
+      },
+    ],
+  },
+
+  //
+
+  {
+    path: '/dashboard',
+    element: <DashboardLayout />,
+    children: [
+      {
+        index: true,
+        element: <Dashboard />,
+      },
+      {
+        path: 'profile',
+        element: <Profile />,
       },
     ],
   },
