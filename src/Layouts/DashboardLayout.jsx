@@ -3,7 +3,7 @@ import Sidebar from '../Components/Sidebar';
 
 const DashboardLayout = () => {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 overflow-hidden">
       <Sidebar />
 
       {/* Main content */}

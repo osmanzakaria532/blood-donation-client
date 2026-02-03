@@ -22,12 +22,11 @@ const Sidebar = () => {
       navigate('/');
     });
   };
-  // ${open ? 'w-64' : 'w-16'}
+  //
   return (
     <aside
-      className={`fixed top-0 left-0 z-40 h-screen bg-red-600 text-white
-      transition-all duration-300
-
+      className={`fixed top-0 left-0 h-screen bg-red-600 text-white
+      transition-all duration-300 ${open ? 'w-64' : 'w-16'}
       `}
     >
       {/* Header */}
@@ -44,7 +43,7 @@ const Sidebar = () => {
       </div>
 
       {/* Menu */}
-      <nav className="mt-4 flex flex-col justify-between h-[calc(100%-64px)]">
+      <nav className="mt-4 flex flex-col justify-between h-[calc(100%-64px)] pb-2.5">
         <ul className="space-y-1">
           <SidebarItem to="/dashboard" icon="🏠" label="Dashboard" open={open} />
           <SidebarItem to="/dashboard/profile" icon="👤" label="Profile" open={open} />
