@@ -27,7 +27,7 @@ const Sidebar = () => {
   //
   return (
     <aside
-      className={`fixed top-0 left-0 h-screen bg-red-600 text-white
+      className={`fixed top-0 left-0 z-50 h-screen bg-red-600 text-white
       transition-all duration-300 ${open ? 'w-64' : 'w-16'}
       `}
     >
@@ -66,7 +66,7 @@ const Sidebar = () => {
             <SidebarItem
               to="/dashboard/all-blood-donation-request"
               icon="🗂"
-              label="All Requests"
+              label="All Blood Donation Request"
               open={open}
             />
           )}
