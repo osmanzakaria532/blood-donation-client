@@ -3,11 +3,11 @@ import DashboardLayout from '../Layouts/DashboardLayout';
 import RootLayout from '../Layouts/RootLayout';
 import Registration from '../Pages/Auth/Registratrion/Registration';
 import SignIn from '../Pages/Auth/SignIn/SignIn';
+import CreateDonationRequest from '../Pages/Dashboard/CreateDonationRequest/CreateDonationRequest';
 import Dashboard from '../Pages/Dashboard/dashboard';
-import Profile from '../Pages/Dashboard/Profile/profile';
-import DonationRequests from '../Pages/DonationRequests/DonationRequests';
-import Home from '../Pages/Home/Home';
 import MyDonationRequests from '../Pages/Dashboard/MyDonationRequests/MyDonationRequests';
+import Profile from '../Pages/Dashboard/Profile/profile';
+import Home from '../Pages/Home/Home';
 
 // const role = 'donor'; // donor | volunteer | admin
 
@@ -19,10 +19,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-      },
-      {
-        path: 'donation-requests',
-        element: <DonationRequests />,
       },
     ],
   },
@@ -59,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: 'my-donation-requests',
         element: <MyDonationRequests />,
+      },
+      {
+        path: 'create-donation-request',
+        element: <CreateDonationRequest />,
       },
     ],
   },
