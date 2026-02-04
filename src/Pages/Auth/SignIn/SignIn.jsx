@@ -14,11 +14,9 @@ const SignIn = () => {
   } = useForm();
 
   const handleSignIn = (data) => {
-    console.log('login');
     signInUser(data.email, data.password)
       .then((result) => {
         console.log(result.user);
-
         navigate('/');
       })
       .catch((error) => {

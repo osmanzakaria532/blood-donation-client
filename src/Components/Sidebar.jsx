@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import { useAuth } from '../Hooks/useAuth';
+import useRole from '../Hooks/useRole';
 
 const Sidebar = () => {
   const { logOut } = useAuth();
   const navigate = useNavigate();
+  const { role } = useRole();
 
   const [open, setOpen] = useState(() => {
     const saved = localStorage.getItem('sidebar');
@@ -59,13 +61,18 @@ const Sidebar = () => {
             label="My Donation Requests"
             open={open}
           />
-          <SidebarItem
-            to="/dashboard/all-blood-donation-request"
-            icon="🗂"
-            label="All Requests"
-            open={open}
-          />
-          <SidebarItem to="/dashboard/all-users" icon="👥" label="All Users" open={open} />
+
+          {role === 'admin' && (
+            <SidebarItem
+              to="/dashboard/all-blood-donation-request"
+              icon="🗂"
+              label="All Requests"
+              open={open}
+            />
+          )}
+          {role === 'admin' && (
+            <SidebarItem to="/dashboard/all-users" icon="👥" label="All Users" open={open} />
+          )}
         </ul>
 
         <button

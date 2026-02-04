@@ -7,12 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start:admin": "vite --port 5173",
+    "start:donor": "vite --port 5174",
+    "start:user": "vite --port 5175",
+    "start:dev": "concurrently \"npm run start:admin\" \"npm run start:donor\" \"npm run start:user\""
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-query": "^5.90.20",
     "axios": "^1.13.4",
+    "concurrently": "^9.2.1",
     "firebase": "^12.8.0",
     "lucide-react": "^0.563.0",
     "react": "^19.2.0",
@@ -20,6 +25,7 @@
     "react-hook-form": "^7.71.1",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.13.0",
+    "react-spinners": "^0.17.0",
     "react-toastify": "^11.0.5",
     "sweetalert2": "^11.26.17",
     "tailwindcss": "^4.1.18"

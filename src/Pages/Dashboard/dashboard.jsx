@@ -1,7 +1,13 @@
 import { useState } from 'react';
+import { FaDonate, FaTint, FaUsers } from 'react-icons/fa'; // icons for stats
+import { useAuth } from '../../Hooks/useAuth';
+import useRole from '../../Hooks/useRole';
 
 const Dashboard = () => {
-  // Sample data (future e backend theke asbe)
+  const { role } = useRole();
+  const { user } = useAuth();
+
+  // Sample data (later will come from backend)
   const [donationRequests, setDonationRequests] = useState([
     {
       id: 1,
@@ -12,10 +18,7 @@ const Dashboard = () => {
       time: '10:00 AM',
       bloodGroup: 'B+',
       status: 'inprogress',
-      donorInfo: {
-        name: 'Karim Ahmed',
-        email: 'karim@example.com',
-      },
+      donorInfo: { name: 'Karim Ahmed', email: 'karim@example.com' },
     },
     {
       id: 2,
@@ -26,10 +29,7 @@ const Dashboard = () => {
       time: '2:30 PM',
       bloodGroup: 'O+',
       status: 'done',
-      donorInfo: {
-        name: 'Salma Begum',
-        email: 'salma@example.com',
-      },
+      donorInfo: { name: 'Salma Begum', email: 'salma@example.com' },
     },
     {
       id: 3,
@@ -46,6 +46,11 @@ const Dashboard = () => {
 
   const [deleteId, setDeleteId] = useState(null);
 
+  // Sample stats (replace with API data later)
+  const totalUsers = 120;
+  const totalFunding = 5400; // assume currency in USD
+  const totalRequests = donationRequests.length;
+
   // Status badge
   const StatusBadge = ({ status }) => {
     const styles = {
@@ -54,14 +59,12 @@ const Dashboard = () => {
       done: 'bg-green-100 text-green-800',
       canceled: 'bg-red-100 text-red-800',
     };
-
     const labels = {
       pending: 'Pending',
       inprogress: 'In Progress',
       done: 'Done',
       canceled: 'Canceled',
     };
-
     return (
       <span className={`px-3 py-1 rounded-full text-sm font-medium ${styles[status]}`}>
         {labels[status]}
@@ -86,11 +89,14 @@ const Dashboard = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto p-4">
-        {/* Welcome */}
+        {/* Welcome Section */}
         <div className="bg-white p-6 rounded shadow mb-6 flex flex-col md:flex-row justify-between">
           <div>
             <h2 className="text-2xl font-bold">
-              Welcome back, <span className="text-red-600">Mohammad Rahman</span>
+              Welcome back,{' '}
+              <span className="text-red-600">
+                {role === 'admin' ? <span>{user?.displayName}</span> : user?.displayName}
+              </span>
             </h2>
             <p className="text-gray-600">Thank you for being a life saver ❤️</p>
           </div>
@@ -98,6 +104,33 @@ const Dashboard = () => {
             + Create New Request
           </button>
         </div>
+
+        {/* Featured Statistics Cards */}
+        {role === 'admin' && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="bg-white p-6 rounded shadow flex items-center gap-4">
+              <FaUsers className="text-red-600 text-3xl" />
+              <div>
+                <p className="text-2xl font-bold">{totalUsers}</p>
+                <p className="text-gray-600">Total Donors</p>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded shadow flex items-center gap-4">
+              <FaDonate className="text-green-600 text-3xl" />
+              <div>
+                <p className="text-2xl font-bold">${totalFunding}</p>
+                <p className="text-gray-600">Total Funding</p>
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded shadow flex items-center gap-4">
+              <FaTint className="text-blue-600 text-3xl" />
+              <div>
+                <p className="text-2xl font-bold">{totalRequests}</p>
+                <p className="text-gray-600">Blood Donation Requests</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Empty state */}
         {donationRequests.length === 0 && (

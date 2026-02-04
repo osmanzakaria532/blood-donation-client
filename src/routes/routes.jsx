@@ -3,11 +3,13 @@ import DashboardLayout from '../Layouts/DashboardLayout';
 import RootLayout from '../Layouts/RootLayout';
 import Registration from '../Pages/Auth/Registratrion/Registration';
 import SignIn from '../Pages/Auth/SignIn/SignIn';
+import AllUsers from '../Pages/Dashboard/AllUsers/AllUsers';
 import CreateDonationRequest from '../Pages/Dashboard/CreateDonationRequest/CreateDonationRequest';
 import Dashboard from '../Pages/Dashboard/dashboard';
 import MyDonationRequests from '../Pages/Dashboard/MyDonationRequests/MyDonationRequests';
 import Profile from '../Pages/Dashboard/Profile/profile';
 import Home from '../Pages/Home/Home';
+import AdminRouter from './AdminRoute';
 
 // const role = 'donor'; // donor | volunteer | admin
 
@@ -59,6 +61,14 @@ const router = createBrowserRouter([
       {
         path: 'create-donation-request',
         element: <CreateDonationRequest />,
+      },
+      {
+        path: 'all-users',
+        element: (
+          <AdminRouter>
+            <AllUsers />,
+          </AdminRouter>
+        ),
       },
     ],
   },
