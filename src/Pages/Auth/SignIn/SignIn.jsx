@@ -36,9 +36,11 @@ const SignIn = () => {
             <span className="absolute text-[15rem] opacity-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 animate-pulse">
               🩸
             </span>
-            <h1 className="relative z-10 font-serif text-white text-4xl font-bold mb-2 drop-shadow-md">
-              🩸 LifeStream
-            </h1>
+            <Link to="/">
+              <h1 className="relative z-10 font-serif text-white text-4xl font-bold mb-2 drop-shadow-md">
+                🩸 LifeStream
+              </h1>
+            </Link>
             <p className="relative z-10 text-white/95">Welcome back to our life-saving community</p>
           </div>
 
@@ -118,7 +120,7 @@ const SignIn = () => {
               </button>
             </form>
 
-            <div className="flex items-center gap-4 my-8 text-gray-400 text-sm animate-fadeIn animate-delay-700">
+            {/* <div className="flex items-center gap-4 my-8 text-gray-400 text-sm animate-fadeIn animate-delay-700">
               <div className="flex-1 h-px bg-gray-200"></div>
               <span>or continue with</span>
               <div className="flex-1 h-px bg-gray-200"></div>
@@ -131,7 +133,7 @@ const SignIn = () => {
               <button className="flex items-center justify-center gap-2 py-3 border-2 border-gray-200 rounded-xl bg-white text-gray-700 hover:border-[#DC143C] hover:bg-[#FFF5F5] transition-all">
                 Facebook
               </button>
-            </div>
+            </div> */}
 
             <div className="text-center text-gray-500 mt-6 animate-fadeIn animate-delay-900">
               Don't have an account?{' '}

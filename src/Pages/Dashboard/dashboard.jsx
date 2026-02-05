@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FaDonate, FaTint, FaUsers } from 'react-icons/fa'; // icons for stats
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../Hooks/useAuth';
 import useRole from '../../Hooks/useRole';
 
@@ -100,9 +101,12 @@ const Dashboard = () => {
             </h2>
             <p className="text-gray-600">Thank you for being a life saver ❤️</p>
           </div>
-          <button className="mt-4 md:mt-0 bg-red-600 text-white px-6 py-3 rounded">
+          <Link
+            to="/dashboard/create-donation-request"
+            className="mt-4 md:mt-0 bg-red-600 text-white px-6 py-3 rounded"
+          >
             + Create New Request
-          </button>
+          </Link>
         </div>
 
         {/* Featured Statistics Cards */}

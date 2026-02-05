@@ -91,9 +91,14 @@ const Profile = () => {
                   <h1 className="text-2xl sm:text-3xl font-semibold capitalize">
                     {profileUser.displayName}
                   </h1>
-                  <span className="inline-block mt-2 px-3 sm:px-4 py-1 text-xs sm:text-sm font-medium text-white rounded-full bg-linear-to-br from-red-600 to-red-800 capitalize tracking-wide">
-                    {profileUser.role}
-                  </span>
+                  <div className="space-x-2.5">
+                    <span className="inline-block mt-2 px-3 sm:px-4 py-1 text-xs sm:text-sm font-medium text-white rounded-full bg-linear-to-br from-red-600 to-red-800 capitalize tracking-wide">
+                      {profileUser.role}
+                    </span>
+                    <span className="inline-block mt-2 px-3 sm:px-4 py-1 text-xs sm:text-sm font-medium text-white rounded-full bg-linear-to-br from-green-600 to-red-800 capitalize tracking-wide">
+                      {profileUser.status}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

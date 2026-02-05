@@ -137,14 +137,16 @@ const CreateDonationRequest = () => {
           {/* Location */}
           <div>
             <h2 className="text-xl font-semibold mb-3">Donation Location</h2>
-            <input name="hospital" placeholder="Hospital Name" required className="input mb-4" />
-            <textarea
-              name="address"
-              rows="3"
-              placeholder="Full Address"
-              required
-              className="input"
-            />
+            <div className="grid md:grid-cols-2 gap-4">
+              <input name="hospital" placeholder="Hospital Name" required className="input mb-4" />
+              <textarea
+                name="address"
+                rows="3"
+                placeholder="Full Address"
+                required
+                className="input"
+              />
+            </div>
           </div>
 
           {/* Schedule */}

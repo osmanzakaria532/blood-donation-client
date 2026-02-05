@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/immutability */
 // BloodDonationRequests.jsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useAuth } from '../../Hooks/useAuth';
 
 // Sample donation requests data
 const donationRequests = [
@@ -56,8 +58,10 @@ const donationRequests = [
 ];
 
 const DonationRequests = () => {
+  const { user } = useAuth();
   const [view, setView] = useState('card');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -68,12 +72,13 @@ const DonationRequests = () => {
   };
 
   const viewDetails = (requestId) => {
-    if (!isLoggedIn) {
-      alert('Please log in to view donation request details.');
-      window.location.href = 'donation-details';
-    } else {
-      window.location.href = `donation-details/${requestId}`;
+    if (!user) {
+      toast.error('Please log in to view donation request details.');
+      navigate('/auth/sign-in');
+      return;
     }
+
+    navigate(`/donation-details/${requestId}`);
   };
 
   return (
