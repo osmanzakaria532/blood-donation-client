@@ -82,6 +82,7 @@ const router = createBrowserRouter([
       {
         path: 'create-donation-request',
         element: <CreateDonationRequest />,
+        loader: () => fetch('/bd-divisions-district-upazila-en.json').then((res) => res.json()),
       },
 
       {

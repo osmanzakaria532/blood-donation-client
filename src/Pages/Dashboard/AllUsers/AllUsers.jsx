@@ -25,7 +25,7 @@ const AllUsers = () => {
   });
 
   if (isLoading) {
-    return <p className="text-center mt-10">Loading...</p>;
+    return <p calssName="text-center mt-10">Loading...</p>;
   }
 
   // filter
@@ -183,30 +183,30 @@ const AllUsers = () => {
         </div>
 
         {/* Pagination */}
-        <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="text-sm text-gray-700">
+        <div calssName="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div calssName="text-sm text-gray-700">
             Showing{' '}
-            <span class="font-semibold" id="showing-count">
+            <span calssName="font-semibold" id="showing-count">
               1-10
             </span>{' '}
             of{' '}
-            <span class="font-semibold" id="total-count">
+            <span calssName="font-semibold" id="total-count">
               {users.length}
             </span>{' '}
             users
           </div>
-          <div class="flex gap-2">
+          <div calssName="flex gap-2">
             <button
               onclick="changePage('prev')"
-              class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              calssName="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <i class="fas fa-chevron-left mr-1"></i> Previous
+              <i calssName="fas fa-chevron-left mr-1"></i> Previous
             </button>
             <button
               onclick="changePage('next')"
-              class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              calssName="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Next <i class="fas fa-chevron-right ml-1"></i>
+              Next <i calssName="fas fa-chevron-right ml-1"></i>
             </button>
           </div>
         </div>
