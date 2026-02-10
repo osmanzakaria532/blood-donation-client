@@ -18,6 +18,7 @@ const CreateDonationRequest = () => {
     formState: { errors },
     setValue,
     control,
+    reset,
   } = useForm();
 
   // Watch division and district for dynamic select
@@ -90,7 +91,8 @@ const CreateDonationRequest = () => {
 
       // 3️⃣ success handle
       if (res.data?.insertedId) {
-        alert('Donation request created successfully');
+        reset();
+        toast.success('Donation request created successfully');
       }
     } catch (error) {
       console.error('Failed to create donation request', error);

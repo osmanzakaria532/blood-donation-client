@@ -1,75 +1,56 @@
 /* eslint-disable no-unused-vars */
-// BloodDonationRequests.jsx
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../Hooks/useAuth';
-
-// Sample donation requests data
-const donationRequests = [
-  {
-    id: 1,
-    recipientName: 'Ahmed Hassan',
-    location: 'Chittagong Medical College Hospital',
-    bloodGroup: 'A+',
-    date: '2024-12-28',
-    time: '10:00 AM',
-  },
-  {
-    id: 2,
-    recipientName: 'Fatima Rahman',
-    location: 'Imperial Hospital, Agrabad',
-    bloodGroup: 'O-',
-    date: '2024-12-27',
-    time: '2:30 PM',
-  },
-  {
-    id: 3,
-    recipientName: 'Mohammad Ali',
-    location: 'Chevron Clinical Laboratory',
-    bloodGroup: 'B+',
-    date: '2024-12-29',
-    time: '9:00 AM',
-  },
-  {
-    id: 4,
-    recipientName: 'Nusrat Jahan',
-    location: 'Max Hospital, Nasirabad',
-    bloodGroup: 'AB+',
-    date: '2024-12-27',
-    time: '4:00 PM',
-  },
-  {
-    id: 5,
-    recipientName: 'Karim Uddin',
-    location: 'General Hospital, Pahartali',
-    bloodGroup: 'O+',
-    date: '2024-12-30',
-    time: '11:30 AM',
-  },
-  {
-    id: 6,
-    recipientName: 'Ayesha Siddiqua',
-    location: 'Surgiscope Hospital',
-    bloodGroup: 'A-',
-    date: '2024-12-28',
-    time: '3:00 PM',
-  },
-];
+import useAxiosSecure from '../../Hooks/useAxiosSecure';
 
 const DonationRequests = () => {
   const { user } = useAuth();
-  const [view, setView] = useState('card');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const axiosSecure = useAxiosSecure();
+  const [loading, setLoading] = useState(true);
+  const [requests, setRequests] = useState([]);
   const navigate = useNavigate();
 
   const formatDate = (dateString) => {
+    if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
   };
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchPendingRequests = async () => {
+      setLoading(true);
+      try {
+        const res = await axiosSecure.get('/donationRequest/pending');
+        if (isMounted) {
+          setRequests(Array.isArray(res.data) ? res.data : []);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setRequests([]);
+          toast.error('Failed to load pending donation requests.');
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchPendingRequests();
+    return () => {
+      isMounted = false;
+    };
+  }, [axiosSecure]);
+
+  const pendingRequests = useMemo(() => {
+    return requests.filter((req) => (req.status || '').toLowerCase() === 'pending');
+  }, [requests]);
 
   const viewDetails = (requestId) => {
     if (!user) {
@@ -86,38 +67,22 @@ const DonationRequests = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <header className="bg-white p-6 rounded-xl shadow mb-8 text-center">
-          <h1 className="text-4xl text-red-600 mb-2">🩸 Blood Donation Requests</h1>
+          <h1 className="text-4xl text-red-600 mb-2">Blood Donation Requests</h1>
           <p className="text-gray-600 text-lg">Help save lives by donating blood</p>
         </header>
 
-        {/* View Toggle */}
-        <div className="flex justify-center gap-4 mb-6">
-          <button
-            className={`px-6 py-2 font-semibold rounded-lg border-2 transition ${
-              view === 'card'
-                ? 'bg-indigo-500 text-white border-indigo-500'
-                : 'bg-white text-indigo-500 border-indigo-500'
-            }`}
-            onClick={() => setView('card')}
-          >
-            Card View
-          </button>
-          <button
-            className={`px-6 py-2 font-semibold rounded-lg border-2 transition ${
-              view === 'table'
-                ? 'bg-indigo-500 text-white border-indigo-500'
-                : 'bg-white text-indigo-500 border-indigo-500'
-            }`}
-            onClick={() => setView('table')}
-          >
-            Table View
-          </button>
-        </div>
+        {/* Loading */}
+        {loading && (
+          <div className="bg-white p-16 rounded-xl shadow text-center">
+            <div className="text-4xl mb-4">Loading...</div>
+            <p className="text-gray-500">Fetching pending donation requests</p>
+          </div>
+        )}
 
         {/* Card View */}
-        {donationRequests.length === 0 ? (
+        {!loading && pendingRequests.length === 0 ? (
           <div className="bg-white p-16 rounded-xl shadow text-center">
-            <div className="text-6xl mb-4">🩸</div>
+            {/* <div className="text-6xl mb-4">ðŸ©¸</div> */}
             <h2 className="text-gray-600 mb-2 text-2xl">No Pending Requests</h2>
             <p className="text-gray-400">
               There are currently no blood donation requests available.
@@ -125,16 +90,16 @@ const DonationRequests = () => {
           </div>
         ) : (
           <>
-            {view === 'card' && (
+            {!loading && (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
-                {donationRequests.map((req) => (
+                {pendingRequests.map((req) => (
                   <div
-                    key={req.id}
+                    key={req._id}
                     className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 relative overflow-hidden"
                   >
                     <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-red-600 to-red-400"></div>
                     <div className="text-white bg-red-600 font-bold text-2xl px-6 py-3 rounded-lg mb-4 shadow-md inline-block">
-                      {req.bloodGroup}
+                      {req.recipientBloodGroup}
                     </div>
 
                     <div className="mb-4">
@@ -144,69 +109,31 @@ const DonationRequests = () => {
 
                     <div className="mb-4">
                       <p className="text-gray-500 font-semibold">Location:</p>
-                      <p className="text-gray-800">{req.location}</p>
+                      <p className="text-gray-800">
+                        {req.recipientDistrict}
+                        {req.recipientUpazila ? `, ${req.recipientUpazila}` : ''}
+                      </p>
                     </div>
 
                     <div className="mb-4 flex justify-between">
                       <div>
                         <p className="text-gray-500 font-semibold">Date:</p>
-                        <p className="text-gray-800">{formatDate(req.date)}</p>
+                        <p className="text-gray-800">{formatDate(req.donationDate)}</p>
                       </div>
                       <div>
                         <p className="text-gray-500 font-semibold">Time:</p>
-                        <p className="text-gray-800">{req.time}</p>
+                        <p className="text-gray-800">{req.donationTime}</p>
                       </div>
                     </div>
 
                     <button
-                      onClick={() => viewDetails(req.id)}
+                      onClick={() => viewDetails(req._id)}
                       className="w-full bg-linear-to-br from-indigo-500 to-purple-700 text-white py-2 font-semibold rounded-lg hover:shadow-md transition"
                     >
                       View Details
                     </button>
                   </div>
                 ))}
-              </div>
-            )}
-
-            {/* Table View */}
-            {view === 'table' && (
-              <div className="overflow-x-auto bg-white p-6 rounded-xl shadow-lg">
-                <table className="w-full table-auto border-collapse">
-                  <thead className="bg-linear-to-br from-indigo-500 to-purple-700 text-white">
-                    <tr>
-                      <th className="py-3 px-4 text-left">Blood Group</th>
-                      <th className="py-3 px-4 text-left">Recipient Name</th>
-                      <th className="py-3 px-4 text-left">Location</th>
-                      <th className="py-3 px-4 text-left">Date</th>
-                      <th className="py-3 px-4 text-left">Time</th>
-                      <th className="py-3 px-4 text-left">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {donationRequests.map((req) => (
-                      <tr key={req.id} className="hover:bg-gray-50">
-                        <td className="py-2 px-4">
-                          <span className="inline-block bg-red-600 text-white font-bold px-3 py-1 rounded-md">
-                            {req.bloodGroup}
-                          </span>
-                        </td>
-                        <td className="py-2 px-4">{req.recipientName}</td>
-                        <td className="py-2 px-4">{req.location}</td>
-                        <td className="py-2 px-4">{formatDate(req.date)}</td>
-                        <td className="py-2 px-4">{req.time}</td>
-                        <td className="py-2 px-4">
-                          <button
-                            onClick={() => viewDetails(req.id)}
-                            className="bg-linear-to-br from-indigo-500 to-purple-700 text-white px-4 py-1 rounded-md font-semibold hover:shadow-md transition"
-                          >
-                            View Details
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
               </div>
             )}
           </>
