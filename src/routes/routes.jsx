@@ -15,6 +15,7 @@ import DonationRequests from '../Pages/DonationRequests/DonationRequests';
 import Home from '../Pages/Home/Home';
 import SearchDonors from '../Pages/SearchDonors/SearchDonors';
 import AdminRouter from './AdminRoute';
+import PrivateRoute from './PrivateRoute';
 
 // const role = 'donor'; // donor | volunteer | admin
 
@@ -32,8 +33,12 @@ const router = createBrowserRouter([
         element: <DonationRequests />,
       },
       {
-        path: 'donation-details',
-        element: <DonationDetails />,
+        path: 'donation-details/:id',
+        element: (
+          <PrivateRoute>
+            <DonationDetails />
+          </PrivateRoute>
+        ),
       },
       {
         path: 'search-donors',
