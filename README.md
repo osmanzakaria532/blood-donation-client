@@ -1,16 +1,29 @@
-# React + Vite
+# LifeStream (Client)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Purpose
+LifeStream একটি blood donation platform, যেটা donors এবং রক্ত-প্রয়োজনীয় রোগীদের দ্রুত সংযুক্ত করে। লক্ষ্য হলো একটি সহজ, সুন্দর ও নির্ভরযোগ্য UI তৈরি করা যেখানে user registration, donation request management, এবং role-based dashboard ব্যবস্থাপনা থাকবে—এভাবে জরুরি রক্তের চাহিদা দ্রুত পূরণ করা যাবে।
 
-Currently, two official plugins are available:
+## Live URL
+TBA
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Features
+- Firebase authentication দিয়ে user registration ও login
+- Role-based dashboard (donor, volunteer, admin)
+- Blood donation request তৈরি ও ম্যানেজ করা
+- Blood group এবং location অনুযায়ী donor search
+- Profile view এবং তথ্য আপডেট করার সুবিধা
+- Responsive UI এবং consistent design theme
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## NPM Packages Used
+- @tanstack/react-query
+- axios
+- firebase
+- react
+- react-dom
+- react-hook-form
+- react-icons
+- react-router-dom
+- react-toastify
+- sweetalert2
+- tailwindcss
+- daisyui
