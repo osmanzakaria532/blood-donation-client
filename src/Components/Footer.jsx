@@ -1,4 +1,5 @@
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
+import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import Container from './_UI/Container';
 
@@ -30,7 +31,7 @@ const Footer = () => {
                 target="_blank"
                 className="bg-gray-700 p-2  flex items-center justify-center rounded-full hover:bg-red-700 transition"
               >
-                <FaTwitter />
+                <FaXTwitter />
               </Link>
 
               <Link
@@ -58,13 +59,13 @@ const Footer = () => {
                 <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/search">Search Donors</Link>
+                <Link to="/search-donors">Search Donors</Link>
               </li>
               <li>
                 <Link to="/donation-requests">Donation Requests</Link>
               </li>
               <li>
-                <Link to="/register">Become a Donor</Link>
+                <Link to="/auth/registratrion">Become a Donor</Link>
               </li>
               <li>
                 <Link to="/funding">Funding Campaigns</Link>
@@ -76,19 +77,19 @@ const Footer = () => {
             <h3 className="text-red-700 font-semibold text-lg mb-4">Resources</h3>
             <ul className="flex flex-col gap-2">
               <li>
-                <Link to="/about">About Blood Donation</Link>
+                <Link to="/donation-requests">About Blood Donation</Link>
               </li>
               <li>
-                <Link to="/eligibility">Donor Eligibility</Link>
+                <Link to="/search-donors">Donor Eligibility</Link>
               </li>
               <li>
-                <Link to="/faq">FAQ</Link>
+                <Link to="/donation-requests">FAQ</Link>
               </li>
               <li>
-                <Link to="/blog">Health Blog</Link>
+                <Link to="/donation-requests">Health Blog</Link>
               </li>
               <li>
-                <Link to="/partner-hospitals">Partner Hospitals</Link>
+                <Link to="/donation-requests">Partner Hospitals</Link>
               </li>
             </ul>
           </div>
@@ -97,16 +98,16 @@ const Footer = () => {
             <h3 className="text-red-700 font-semibold text-lg mb-4">Legal</h3>
             <ul className="flex flex-col gap-2">
               <li>
-                <Link to="/privacy">Privacy Policy</Link>
+                <Link to="/donation-requests">Privacy Policy</Link>
               </li>
               <li>
-                <Link to="/terms">Terms of Service</Link>
+                <Link to="/donation-requests">Terms of Service</Link>
               </li>
               <li>
-                <Link to="/disclaimer">Medical Disclaimer</Link>
+                <Link to="/donation-requests">Medical Disclaimer</Link>
               </li>
               <li>
-                <Link to="/contact">Contact Us</Link>
+                <Link to="/donation-requests">Contact Us</Link>
               </li>
             </ul>
           </div>

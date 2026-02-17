@@ -49,11 +49,15 @@ const DonationDetails = () => {
     if (!request?._id) return;
     setUpdating(true);
     try {
-      await axiosSecure.patch(`/donationRequest/${request._id}`, {
-        status: 'inprogress',
-        donorName: user?.displayName || 'Anonymous',
-        donorEmail: user?.email || '',
-      });
+      await axiosSecure.patch(
+        `/donationRequest/${request._id}`,
+        {
+          status: 'inprogress',
+          donorName: user?.displayName || 'Anonymous',
+          donorEmail: user?.email || '',
+        },
+        { headers: { 'x-user-email': user?.email } },
+      );
       toast.success('Donation request updated to in progress.');
       setShowModal(false);
       setRequest((prev) =>

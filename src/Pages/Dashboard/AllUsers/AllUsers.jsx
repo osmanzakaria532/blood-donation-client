@@ -1,14 +1,18 @@
+/* eslint-disable no-unused-vars */
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react'; // ✅ NEW: filter state এর জন্য
+import { useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../../Hooks/useAuth';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
 
+const normalizeStatus = (status) => {
+  if (!status) return 'active';
+  return status === 'block' ? 'blocked' : status;
+};
+
 const AllUsers = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-
-  // filter state (all | active | block)
   const [filter, setFilter] = useState('all');
 
   const {
@@ -24,51 +28,54 @@ const AllUsers = () => {
     },
   });
 
-  if (isLoading) {
-    return <p calssName="text-center mt-10">Loading...</p>;
-  }
+  const filteredUsers = useMemo(() => {
+    if (filter === 'all') return users;
+    return users.filter((u) => normalizeStatus(u.status) === filter);
+  }, [filter, users]);
 
-  // filter
-  const filteredUsers = filter === 'all' ? users : users.filter((user) => user.status === filter);
-
-  const handleUpdateStatus = async (user) => {
-    // ✅ status toggle logic clean রাখা হয়েছে
-    const newStatus = {
-      status: user.status === 'block' ? 'active' : 'block',
-    };
+  const handleUpdateStatus = async (targetUser) => {
+    const current = normalizeStatus(targetUser.status);
+    const newStatus = current === 'blocked' ? 'active' : 'blocked';
 
     try {
-      await axiosSecure.patch(`/users/${user._id}/status`, newStatus);
+      await axiosSecure.patch(`/users/${targetUser._id}/status`, { status: newStatus });
       toast.success('User status updated');
-
       refetch();
     } catch (error) {
       toast.error('Failed to update user status');
-      console.error(error);
     }
   };
 
-  const handleUpdateRole = async (user) => {
-    console.log('role update', user.role, user._id);
-    const newRole = {
-      role: user.role === 'donor' ? 'volunteer' : 'donor',
-    };
-
-    if (user.role === 'admin') {
+  const handleMakeVolunteer = async (targetUser) => {
+    if (targetUser.role === 'admin') {
       toast.info('Admin role cannot be changed');
       return;
     }
+    if (targetUser.role === 'volunteer') return;
 
     try {
-      await axiosSecure.patch(`/users/${user._id}/role`, newRole);
-      toast.success('User status updated');
-
+      await axiosSecure.patch(`/users/${targetUser._id}/role`, { role: 'volunteer' });
+      toast.success('User role updated');
       refetch();
     } catch (error) {
-      toast.error('Failed to update user status');
-      console.error(error);
+      toast.error('Failed to update user role');
     }
   };
+
+  const handleMakeAdmin = async (targetUser) => {
+    if (targetUser.role === 'admin') return;
+    try {
+      await axiosSecure.patch(`/users/${targetUser._id}/role`, { role: 'admin' });
+      toast.success('User role updated');
+      refetch();
+    } catch (error) {
+      toast.error('Failed to update user role');
+    }
+  };
+
+  if (isLoading) {
+    return <p className="text-center mt-10">Loading...</p>;
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -79,10 +86,9 @@ const AllUsers = () => {
       </header>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* ✅ Filter Buttons */}
         <div className="mb-6 flex flex-wrap gap-3">
           <button
-            onClick={() => setFilter('all')} // ✅ filter set
+            onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-lg text-white text-sm md:text-base transition ${
               filter === 'all' ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'
             }`}
@@ -100,9 +106,9 @@ const AllUsers = () => {
           </button>
 
           <button
-            onClick={() => setFilter('block')}
+            onClick={() => setFilter('blocked')}
             className={`px-4 py-2 rounded-lg text-white text-sm md:text-base transition ${
-              filter === 'block' ? 'bg-red-700' : 'bg-red-600 hover:bg-red-700'
+              filter === 'blocked' ? 'bg-red-700' : 'bg-red-600 hover:bg-red-700'
             }`}
           >
             Blocked
@@ -124,91 +130,70 @@ const AllUsers = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-200">
-              {/* ✅ users এর বদলে filteredUsers */}
-              {filteredUsers.map((user) => (
-                <tr key={user._id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 flex items-center gap-3">
-                    <img
-                      src={user.photoURL}
-                      alt={user.displayName}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                    <span className="font-medium text-gray-900">{user.displayName}</span>
-                  </td>
+              {filteredUsers.map((targetUser) => {
+                const status = normalizeStatus(targetUser.status);
+                return (
+                  <tr key={targetUser._id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 flex items-center gap-3">
+                      <img
+                        src={targetUser.photoURL}
+                        alt={targetUser.displayName}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <span className="font-medium text-gray-900">{targetUser.displayName}</span>
+                    </td>
 
-                  <td className="px-6 py-4 text-sm text-gray-700">{user.email}</td>
+                    <td className="px-6 py-4 text-sm text-gray-700">{targetUser.email}</td>
 
-                  <td className="px-6 py-4">
-                    <span className="px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">
-                      {user.role}
-                    </span>
-                  </td>
+                    <td className="px-6 py-4">
+                      <span className="px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">
+                        {targetUser.role}
+                      </span>
+                    </td>
 
-                  <td className="px-6 py-4">
-                    <span
-                      className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                        user.status === 'block'
-                          ? 'bg-red-100 text-red-700'
-                          : 'bg-green-100 text-green-700'
-                      }`}
-                    >
-                      {user.status}
-                    </span>
-                  </td>
+                    <td className="px-6 py-4">
+                      <span
+                        className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                          status === 'blocked'
+                            ? 'bg-red-100 text-red-700'
+                            : 'bg-green-100 text-green-700'
+                        }`}
+                      >
+                        {status}
+                      </span>
+                    </td>
 
-                  <td className="px-6 py-4 text-center space-x-2">
-                    <button
-                      onClick={() => handleUpdateRole(user)}
-                      className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200"
-                    >
-                      {/* Volunteer */}
-                      {user.role === 'donor' ? 'volunteer' : 'donor'}
-                    </button>
-                    <button
-                      onClick={() => handleUpdateStatus(user)}
-                      className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200"
-                    >
-                      {user.status === 'block' ? 'Active' : 'Block'}
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    <td className="px-6 py-4 text-center space-x-2">
+                      <button
+                        onClick={() => handleMakeVolunteer(targetUser)}
+                        disabled={targetUser.role !== 'donor'}
+                        className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50"
+                      >
+                        Make Volunteer
+                      </button>
+                      <button
+                        onClick={() => handleMakeAdmin(targetUser)}
+                        disabled={targetUser.role === 'admin'}
+                        className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50"
+                      >
+                        Make Admin
+                      </button>
+                      <button
+                        onClick={() => handleUpdateStatus(targetUser)}
+                        className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200"
+                      >
+                        {status === 'blocked' ? 'Unblock' : 'Block'}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
 
-          {/* ✅ filteredUsers অনুযায়ী empty state */}
           {filteredUsers.length === 0 && (
             <p className="text-center py-6 text-gray-500">No users found</p>
           )}
-        </div>
-
-        {/* Pagination */}
-        <div calssName="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div calssName="text-sm text-gray-700">
-            Showing{' '}
-            <span calssName="font-semibold" id="showing-count">
-              1-10
-            </span>{' '}
-            of{' '}
-            <span calssName="font-semibold" id="total-count">
-              {users.length}
-            </span>{' '}
-            users
-          </div>
-          <div calssName="flex gap-2">
-            <button
-              onclick="changePage('prev')"
-              calssName="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <i calssName="fas fa-chevron-left mr-1"></i> Previous
-            </button>
-            <button
-              onclick="changePage('next')"
-              calssName="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Next <i calssName="fas fa-chevron-right ml-1"></i>
-            </button>
-          </div>
         </div>
       </div>
     </div>

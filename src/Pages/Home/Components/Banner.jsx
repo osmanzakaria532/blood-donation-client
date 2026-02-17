@@ -12,7 +12,7 @@ const Banner = () => {
       </p>
       <div className="flex justify-center gap-4 flex-wrap">
         <Link
-          to="/auth/register"
+          to="/auth/registratrion"
           className="bg-white text-red-600 text-s md:text-base px-4 md:px-6 py-2 md:py-3 rounded-full font-semibold hover:shadow-lg hover:-translate-y-0.5 transition"
         >
           Join as a Donor

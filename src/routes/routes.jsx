@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter } from 'react-router-dom';
 import DashboardLayout from '../Layouts/DashboardLayout';
 import RootLayout from '../Layouts/RootLayout';
 import Registration from '../Pages/Auth/Registratrion/Registration';
@@ -7,6 +7,7 @@ import AllBloodDonationRequest from '../Pages/Dashboard/AllBloodDonationRequest/
 import AllUsers from '../Pages/Dashboard/AllUsers/AllUsers';
 import CreateDonationRequest from '../Pages/Dashboard/CreateDonationRequest/CreateDonationRequest';
 import Dashboard from '../Pages/Dashboard/dashboard';
+import EditDonationRequest from '../Pages/Dashboard/EditDonationRequest/EditDonationRequest';
 import Funding from '../Pages/Dashboard/Funding/Funding';
 import MyDonationRequests from '../Pages/Dashboard/MyDonationRequests/MyDonationRequests';
 import Profile from '../Pages/Dashboard/Profile/profile';
@@ -70,7 +71,11 @@ const router = createBrowserRouter([
 
   {
     path: '/dashboard',
-    element: <DashboardLayout />,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         index: true,
@@ -87,6 +92,11 @@ const router = createBrowserRouter([
       {
         path: 'create-donation-request',
         element: <CreateDonationRequest />,
+        loader: () => fetch('/bd-divisions-district-upazila-en.json').then((res) => res.json()),
+      },
+      {
+        path: 'edit-donation-request/:id',
+        element: <EditDonationRequest />,
         loader: () => fetch('/bd-divisions-district-upazila-en.json').then((res) => res.json()),
       },
 

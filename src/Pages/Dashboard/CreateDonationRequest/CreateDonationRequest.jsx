@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { useLoaderData } from 'react-router-dom';
@@ -11,10 +11,20 @@ const CreateDonationRequest = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
+  const { data: userProfile = null, isLoading: profileLoading } = useQuery({
+    queryKey: ['user-profile', user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users?email=${user?.email}`);
+      return Array.isArray(res.data) ? res.data[0] : null;
+    },
+  });
+
+  const isBlocked = userProfile?.status === 'blocked';
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
     setValue,
     control,
@@ -68,6 +78,11 @@ const CreateDonationRequest = () => {
 
   const handleCreationDonationRequest = async (data) => {
     try {
+      if (isBlocked) {
+        toast.error('Your account is blocked. You cannot create a request.');
+        return;
+      }
+
       // 1️⃣ donation request object তৈরি
       const donationRequestInfo = {
         requesterName: user?.displayName,
@@ -113,16 +128,14 @@ const CreateDonationRequest = () => {
         </div>
 
         {/* Blocked Warning */}
-        {/* {isBlocked && (
-
-        )} */}
-
-        <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-6 rounded">
-          <p className="font-bold text-red-700">Access Denied</p>
-          <p className="text-sm text-red-600">
-            Your account is blocked. You cannot create a request.
-          </p>
-        </div>
+        {isBlocked && (
+          <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-6 rounded">
+            <p className="font-bold text-red-700">Access Denied</p>
+            <p className="text-sm text-red-600">
+              Your account is blocked. You cannot create a request.
+            </p>
+          </div>
+        )}
 
         {/* Form */}
         <form
@@ -276,7 +289,10 @@ const CreateDonationRequest = () => {
           />
 
           {/* Submit */}
-          <button className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg">
+          <button
+            disabled={isBlocked || profileLoading}
+            className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             Submit Request
           </button>
         </form>
