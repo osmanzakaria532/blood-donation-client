@@ -5,6 +5,15 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../../Hooks/useAuth';
 import useAxiosSecure from '../../Hooks/useAxiosSecure';
 
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
+
 const DonationDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -126,6 +135,9 @@ const DonationDetails = () => {
               <span className="font-medium">Blood Group:</span> {request.recipientBloodGroup}
             </p>
             <p>
+              <span className="font-medium">Division:</span> {request.recipientDivision}
+            </p>
+            <p>
               <span className="font-medium">Location:</span> {request.recipientDistrict}
               {request.recipientUpazila ? `, ${request.recipientUpazila}` : ''}
             </p>
@@ -140,7 +152,7 @@ const DonationDetails = () => {
           <div className="space-y-3">
             <h2 className="text-lg font-semibold text-gray-700">Schedule & Requester</h2>
             <p>
-              <span className="font-medium">Donation Date:</span> {request.donationDate}
+              <span className="font-medium">Donation Date:</span> {formatDate(request.donationDate)}
             </p>
             <p>
               <span className="font-medium">Donation Time:</span> {request.donationTime}
@@ -168,7 +180,7 @@ const DonationDetails = () => {
           </button>
           <button
             onClick={() => setShowModal(true)}
-            disabled={request.status !== 'pending'}
+            disabled={(request.status || '').toLowerCase() !== 'pending'}
             className="px-6 py-2 rounded-lg bg-red-600 text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Donate Now

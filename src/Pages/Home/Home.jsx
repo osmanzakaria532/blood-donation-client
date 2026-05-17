@@ -1,6 +1,6 @@
 // src/pages/Home.jsx
 import Banner from './Components/Banner';
-import Contents from './Components/Contents';
+import ContactUs from './Components/ContactUs';
 import Featured from './Components/Featured';
 import Stats from './Components/Stats';
 
@@ -10,7 +10,7 @@ const Home = () => {
       <Banner />
       <Stats />
       <Featured />
-      <Contents />
+      <ContactUs />
     </>
   );
 };

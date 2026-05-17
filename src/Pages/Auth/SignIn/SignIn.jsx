@@ -32,17 +32,19 @@ const SignIn = () => {
       <div className="max-w-md w-full relative z-10">
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden animate-slideUp">
           {/* Header */}
-          <div className="relative text-center py-12 px-8 bg-linear-to-br from-[#DC143C] to-[#B12234] overflow-hidden">
-            <span className="absolute text-[15rem] opacity-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 animate-pulse">
-              🩸
-            </span>
-            <Link to="/">
+          <Link to="/">
+            <div className="relative text-center py-12 px-8 bg-linear-to-br from-[#DC143C] to-[#B12234] overflow-hidden">
+              <span className="absolute text-[15rem] opacity-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -rotate-12 animate-pulse">
+                🩸
+              </span>
               <h1 className="relative z-10 font-serif text-white text-4xl font-bold mb-2 drop-shadow-md">
                 🩸 LifeStream
               </h1>
-            </Link>
-            <p className="relative z-10 text-white/95">Welcome back to our life-saving community</p>
-          </div>
+              <p className="relative z-10 text-white/95">
+                Welcome back to our life-saving community
+              </p>
+            </div>
+          </Link>
 
           {/* Form */}
           <div className="p-10">

@@ -1,6 +1,6 @@
 import Container from '../../../Components/_UI/Container';
 
-const Contact = () => {
+const ContactUs = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     alert('Thank you for contacting us! We will get back to you soon.');
@@ -92,4 +92,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default ContactUs;

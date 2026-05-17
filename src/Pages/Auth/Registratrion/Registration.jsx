@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { useAuth } from '../../../Hooks/useAuth';
@@ -132,13 +132,15 @@ const Registration = () => {
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-rose-50 via-rose-100 to-rose-50 p-4">
       <div className="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-3xl w-full animate-slideUp">
         {/* Header */}
-        <div className="bg-linear-to-br from-red-600 to-red-700 text-center p-12 relative overflow-hidden">
-          <span className="absolute text-[15rem] opacity-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[-15deg] animate-pulse">
-            🩸
-          </span>
-          <h1 className="text-4xl font-bold text-white relative z-10">🩸 LifeStream</h1>
-          <p className="text-white/90 relative z-10 mt-2">Join our life-saving community</p>
-        </div>
+        <Link to="/" className="block">
+          <div className="bg-linear-to-br from-red-600 to-red-700 text-center p-12 relative overflow-hidden">
+            <span className="absolute text-[15rem] opacity-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[-15deg] animate-pulse">
+              🩸
+            </span>
+            <h1 className="text-4xl font-bold text-white relative z-10">🩸 LifeStream</h1>
+            <p className="text-white/90 relative z-10 mt-2">Join our life-saving community</p>
+          </div>
+        </Link>
 
         {/* Form */}
         <form onSubmit={handleSubmit(handleSubmitRegistration)} className="p-8 space-y-6">

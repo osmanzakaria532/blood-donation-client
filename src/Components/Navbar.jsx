@@ -3,6 +3,7 @@ import { MdArrowOutward } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../Hooks/useAuth';
+import useRole from '../Hooks/useRole';
 import Container from './_UI/Container';
 import Logo from './_UI/Logo';
 import NavItem from './_UI/NavItem';
@@ -10,6 +11,7 @@ import NavItem from './_UI/NavItem';
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { user, logOut } = useAuth();
+  const { role } = useRole();
 
   const handleSignOut = () => {
     logOut()
@@ -29,6 +31,9 @@ const Navbar = () => {
       </li>
       <li onClick={() => setOpen(false)}>
         <NavItem children="Donation Requests" href="/donation-requests" />
+      </li>
+      <li onClick={() => setOpen(false)}>
+        <NavItem children="Search Donors" href="/search-donors" />
       </li>
       <li onClick={() => setOpen(false)}>
         <NavItem children="Funding" href="/funding" />
@@ -55,12 +60,15 @@ const Navbar = () => {
             {user ? (
               <>
                 <div onClick={() => setOpen(!open)} className="relative cursor-pointer">
-                  <img
-                    src={user?.photoURL}
-                    alt="Profile photo"
-                    className="rounded-full w-10 h-10 object-cover"
-                    title={user?.displayName}
-                  />
+                  <div className="flex items-center gap-2">
+                    <p>{role}</p>
+                    <img
+                      src={user?.photoURL}
+                      alt="Profile photo"
+                      className="rounded-full w-10 h-10 object-cover"
+                      title={user?.displayName}
+                    />
+                  </div>
                   {open && (
                     <div className="w-32 absolute -right-2 mt-3 bg-white px-2 py-2 space-y-1.5 flex flex-col justify-end items-end text-center">
                       <div className="w-full">

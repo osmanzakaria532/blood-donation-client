@@ -14,6 +14,7 @@ const AllUsers = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [filter, setFilter] = useState('all');
+  // const isAdmin = user?.email === 'osmanzakaria@gmail.com';
 
   const {
     data: users = [],
@@ -30,6 +31,7 @@ const AllUsers = () => {
 
   const filteredUsers = useMemo(() => {
     if (filter === 'all') return users;
+
     return users.filter((u) => normalizeStatus(u.status) === filter);
   }, [filter, users]);
 
@@ -55,6 +57,22 @@ const AllUsers = () => {
 
     try {
       await axiosSecure.patch(`/users/${targetUser._id}/role`, { role: 'volunteer' });
+      toast.success('User role updated');
+      refetch();
+    } catch (error) {
+      toast.error('Failed to update user role');
+    }
+  };
+
+  const handleMakeDoner = async (targetUser) => {
+    if (targetUser.role === 'admin') {
+      toast.info('Admin role cannot be changed');
+      return;
+    }
+    if (targetUser.role === 'doner') return;
+
+    try {
+      await axiosSecure.patch(`/users/${targetUser._id}/role`, { role: 'doner' });
       toast.success('User role updated');
       refetch();
     } catch (error) {
@@ -131,6 +149,7 @@ const AllUsers = () => {
 
             <tbody className="divide-y divide-gray-200">
               {filteredUsers.map((targetUser) => {
+                const isSelf = user?.email === targetUser?.email;
                 const status = normalizeStatus(targetUser.status);
                 return (
                   <tr key={targetUser._id} className="hover:bg-gray-50">
@@ -164,26 +183,53 @@ const AllUsers = () => {
                     </td>
 
                     <td className="px-6 py-4 text-center space-x-2">
-                      <button
-                        onClick={() => handleMakeVolunteer(targetUser)}
-                        disabled={targetUser.role !== 'donor'}
-                        className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50"
-                      >
-                        Make Volunteer
-                      </button>
-                      <button
-                        onClick={() => handleMakeAdmin(targetUser)}
-                        disabled={targetUser.role === 'admin'}
-                        className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50"
-                      >
-                        Make Admin
-                      </button>
-                      <button
-                        onClick={() => handleUpdateStatus(targetUser)}
-                        className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200"
-                      >
-                        {status === 'blocked' ? 'Unblock' : 'Block'}
-                      </button>
+                      {!isSelf && (
+                        <>
+                          {status !== 'blocked' && (
+                            <>
+                              {/* <button
+                                onClick={() => handleMakeVolunteer(targetUser)}
+                                disabled={targetUser.role !== 'donor'}
+                                className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50"
+                              >
+                                Make Volunteer
+                              </button> */}
+                              {targetUser.role === 'volunteer' ? (
+                                <button
+                                  onClick={() => handleMakeDoner(targetUser)}
+                                  disabled={targetUser.role !== 'donor'}
+                                  className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50"
+                                >
+                                  Make Doner
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() => handleMakeVolunteer(targetUser)}
+                                  disabled={targetUser.role !== 'donor'}
+                                  className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50"
+                                >
+                                  Make Volunteer
+                                </button>
+                              )}
+
+                              <button
+                                onClick={() => handleMakeAdmin(targetUser)}
+                                disabled={targetUser.role === 'admin'}
+                                className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50"
+                              >
+                                Make Admin
+                              </button>
+                            </>
+                          )}
+
+                          <button
+                            onClick={() => handleUpdateStatus(targetUser)}
+                            className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200"
+                          >
+                            {status === 'blocked' ? 'Unblock' : 'Block'}
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 );
