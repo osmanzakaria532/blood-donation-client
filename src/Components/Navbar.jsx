@@ -35,9 +35,11 @@ const Navbar = () => {
       <li onClick={() => setOpen(false)}>
         <NavItem children="Search Donors" href="/search-donors" />
       </li>
-      <li onClick={() => setOpen(false)}>
-        <NavItem children="Funding" href="/funding" />
-      </li>
+      {user && (
+        <li onClick={() => setOpen(false)}>
+          <NavItem children="Funding" href="/funding" />
+        </li>
+      )}
     </>
   );
 

@@ -64,15 +64,15 @@ const AllUsers = () => {
     }
   };
 
-  const handleMakeDoner = async (targetUser) => {
+  const handleMakeDonor = async (targetUser) => {
     if (targetUser.role === 'admin') {
       toast.info('Admin role cannot be changed');
       return;
     }
-    if (targetUser.role === 'doner') return;
+    if (targetUser.role === 'donor') return;
 
     try {
-      await axiosSecure.patch(`/users/${targetUser._id}/role`, { role: 'doner' });
+      await axiosSecure.patch(`/users/${targetUser._id}/role`, { role: 'donor' });
       toast.success('User role updated');
       refetch();
     } catch (error) {
@@ -196,11 +196,10 @@ const AllUsers = () => {
                               </button> */}
                               {targetUser.role === 'volunteer' ? (
                                 <button
-                                  onClick={() => handleMakeDoner(targetUser)}
-                                  disabled={targetUser.role !== 'donor'}
+                                  onClick={() => handleMakeDonor(targetUser)}
                                   className="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50"
                                 >
-                                  Make Doner
+                                  Make Donor
                                 </button>
                               ) : (
                                 <button

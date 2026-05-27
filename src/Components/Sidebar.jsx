@@ -61,8 +61,9 @@ const Sidebar = () => {
             label="My Donation Requests"
             open={open}
           />
+          <SidebarItem to="/dashboard/funding" icon="$" label="Funding" open={open} />
 
-          {role === 'admin' && (
+          {(role === 'admin' || role === 'volunteer') && (
             <SidebarItem
               to="/dashboard/all-blood-donation-request"
               icon="🗂"

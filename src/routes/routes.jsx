@@ -17,6 +17,7 @@ import Home from '../Pages/Home/Home';
 import SearchDonors from '../Pages/SearchDonors/SearchDonors';
 import AdminRouter from './AdminRoute';
 import PrivateRoute from './PrivateRoute';
+import VolunteerRoute from './VolunteerRoute';
 
 // const role = 'donor'; // donor | volunteer | admin
 
@@ -47,7 +48,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'funding',
-        element: <Funding />,
+        element: (
+          <PrivateRoute>
+            <Funding />
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -102,7 +107,15 @@ const router = createBrowserRouter([
 
       {
         path: 'all-blood-donation-request',
-        element: <AllBloodDonationRequest />,
+        element: (
+          <VolunteerRoute>
+            <AllBloodDonationRequest />
+          </VolunteerRoute>
+        ),
+      },
+      {
+        path: 'funding',
+        element: <Funding />,
       },
       {
         path: 'all-users',
